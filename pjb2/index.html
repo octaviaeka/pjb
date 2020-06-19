@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PJB2</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+    <link rel="stylesheet" href="src/L.Control.Sidebar.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css" /><![endif]-->
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        html, body, #map {
+            height: 100%;
+        }
+
+        .lorem {
+            font-style: italic;
+            color: #AAA;
+        }
+
+        body > #sidebar {
+            display: none;
+        }
+
+        .container{
+            background-color: whitesmoke;
+            width: 100%;
+            height: 100%;
+            padding-bottom: 300px;
+            position: absolute;
+        }
+
+        .container2{
+            background-color: white;
+            width: 70%;
+            height: 100%;
+            margin: 100px 250px 0px 250px ;
+            /* position: absolute; */
+        }
+
+        .top{
+            height: 40px;
+            width:98.5%;
+            background-color: rgb(255, 64, 64);
+            color: white;
+            padding-top: 10px;
+            padding-left: 20px;
+            position:fixed;
+        }
+
+        .sidebar2{
+            width: 200px;
+            height: 100%;
+            position: fixed;
+            margin-top: 50px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top">
+            <p>PJB : EBT Monitoring System</p>
+        </div>
+
+        <div class="sidebar2">
+            <img src="https://upload.wikimedia.org/wikipedia/id/8/8e/PJB_LOGO.jpg" style="width: 200px">
+            <div style="background-color: rgb(211, 211, 211);">
+                <p style="margin-left: 20px;">MAIN NAVIGATION</p>
+            </div>
+            <p style="color: red;margin-left: 20px;"> <img src="home.png" style="width: 15px; height: 15px;"> home</p>
+        </div>
+        <div class="container2">
+            <h1 style="margin-left: 50px;">Maps</h1>
+            <div id="map" style="margin-left:50px; width: 800px; height: 440px; border: 1px solid #AAA;">
+                <div id="sidebar">
+                    <h5> <img src="images/Pin-red.png" style="width: 15px; height: 15px;"> rekomendasi sudah ada</h5>
+                    <h5> <img src="images/Pin-green.png" style="width: 15px; height: 15px;"> rekomendasi sudah ada</h5>
+                    <h5> <img src="images/Pin-yellow.png" style="width: 15px; height: 15px;"> rekomendasi sudah ada</h5>
+                    <h5> <img src="images/Pin-blue.png" style="width: 15px; height: 15px;"> rekomendasi sudah ada</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+    <script src="src/L.Control.Sidebar.js"></script>
+    <script type='text/javascript' src='src/markers.js'></script>
+
+    <script>
+        var map = L.map('map');
+        map.setView([-3.681488, 113.382355], 5);
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var sidebar = L.control.sidebar('sidebar', {
+            closeButton: false,
+            position: 'right'
+        });
+        map.addControl(sidebar);
+
+        var marker = [];
+
+        for ( var i=0; i < markers.length; ++i )
+        {
+            L.marker( [markers[i].lat, markers[i].lng])
+            .bindPopup( '<a href="' + markers[i].url + '" target="_blank">' + markers[i].name + '</a>' )
+            .addTo( map ).on('click', function(){
+                sidebar.show();
+            });
+        }
+ 
+         map.on('click', function () {
+            sidebar.hide();
+        })
+
+        sidebar.on('show', function () {
+            console.log('Sidebar will be visible.');
+        });
+
+        sidebar.on('shown', function () {
+            console.log('Sidebar is visible.');
+        });
+
+        sidebar.on('hide', function () {
+            console.log('Sidebar will be hidden.');
+        });
+
+        sidebar.on('hidden', function () {
+            console.log('Sidebar is hidden.');
+        });
+
+        L.DomEvent.on(sidebar.getCloseButton(), 'click', function () {
+            console.log('Close button clicked.');
+        });
+    </script>
+</body>
+</html>
