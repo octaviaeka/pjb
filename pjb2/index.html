@@ -81,10 +81,6 @@
             <h1 style="margin-left: 50px;">Maps</h1>
             <div id="map" style="margin-left:50px; width: 800px; height: 440px; border: 1px solid #AAA;">
                 <div id="sidebar">
-                    <h5> <img src="images/Pin-red.png" style="width: 15px; height: 15px;"> rekomendasi sudah ada</h5>
-                    <h5> <img src="images/Pin-green.png" style="width: 15px; height: 15px;"> rekomendasi sudah ada</h5>
-                    <h5> <img src="images/Pin-yellow.png" style="width: 15px; height: 15px;"> rekomendasi sudah ada</h5>
-                    <h5> <img src="images/Pin-blue.png" style="width: 15px; height: 15px;"> rekomendasi sudah ada</h5>
                 </div>
             </div>
         </div>
@@ -114,9 +110,16 @@
         for ( var i=0; i < markers.length; ++i )
         {
             L.marker( [markers[i].lat, markers[i].lng])
-            .bindPopup( '<a href="' + markers[i].url + '" target="_blank">' + markers[i].name + '</a>' )
+            .bindPopup( markers[i].name + '</a>' )
             .addTo( map ).on('click', function(){
-                sidebar.show();
+                for ( var i=0; i < markers.length; ++i ){
+                    sidebar.setContent('ID lokasi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ' + markers[i].id + 
+                    '</br> lokasi &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ' + markers[i].name + 
+                    '</br> latitude &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ' + markers[i].lat + 
+                    '<br> longitude &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ' + markers[i].lng + 
+                    '</br> kapasitas produksi : ' + markers[i].kapasitas)
+                }
+                sidebar.show();;
             });
         }
  
@@ -125,11 +128,11 @@
         })
 
         sidebar.on('show', function () {
-            console.log('Sidebar will be visible.');
+            sidebar.show();
         });
 
         sidebar.on('shown', function () {
-            console.log('Sidebar is visible.');
+            console.log('Sidebar is visible');
         });
 
         sidebar.on('hide', function () {
@@ -138,10 +141,6 @@
 
         sidebar.on('hidden', function () {
             console.log('Sidebar is hidden.');
-        });
-
-        L.DomEvent.on(sidebar.getCloseButton(), 'click', function () {
-            console.log('Close button clicked.');
         });
     </script>
 </body>
